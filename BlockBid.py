@@ -170,13 +170,99 @@ button[kind="primary"] {
 # -------------------------------
 # Sidebar (brand + quick actions)
 # -------------------------------
+
+
+
+import streamlit as st
+
 with st.sidebar:
-    st.image("D:\OneDrive - Adani\PowerBI\ADANITRANS.NS_BIG-77b50fe7.png", caption="PTS | Block Bids", use_column_width=True)
+    st.markdown(
+        """
+        <style>
+        /* Rounded, friendly font similar to the logo */
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap');
+
+        /* Container for the wordmark line */
+        .adani-mark-line {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;      /* center in sidebar */
+            gap: 10px;                    /* space around the pipe */
+            margin: 8px 0 16px 0;
+        }
+
+        /* Gradient wordmark (no glow, no animation) */
+        .adani-wordmark {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                         Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            font-weight: 900;
+            font-size: 40px;              /* adjust size to taste */
+            line-height: 1;
+            letter-spacing: 2px;
+            text-transform: lowercase;
+            /* Gradient: left → right using your provided stops */
+            background: linear-gradient(90deg,
+                #3FA7CE 0%,
+                #007BB3 18%,
+                #5B59AB 36%,
+                #75489B 54%,
+                #8D2693 70%,
+                #A42C7C 86%,
+                #B73861 100%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;                    /* remove default margins */
+        }
+
+        /* The pipe and the word "Green" in dark gray */
+        .adani-sep {
+            font-weight: 800;
+            font-size: 28px;              /* slightly smaller than "adani" */
+            color: #3a3a3a;               /* dark gray */
+            line-height: 1;
+        }
+        .adani-green {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                         Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            font-weight: 800;
+            font-size: 28px;
+            color: #3a3a3a;               /* dark gray */
+            text-transform: capitalize;   /* Green */
+            line-height: 1;
+        }
+
+        /* Optional: keep your sidebar section styles */
+        .sidebar-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 6px;
+        }
+        .hr {
+            height: 1px;
+            background: linear-gradient(90deg, rgba(63,167,206,0.25), rgba(183,56,97,0.25));
+            border: none;
+            margin: 12px 0;
+        }
+        </style>
+
+        <div class="adani-mark-line" aria-label="adani | Green">
+            <span class="adani-wordmark">adani</span>
+            <span class="adani-sep">|</span>
+            <span class="adani-green">Green</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Your existing sidebar content
     st.markdown('<div class="sidebar-title">Quick Actions</div>', unsafe_allow_html=True)
     st.markdown("🔹 Upload Excel with `Price_Input`\n🔹 Choose portfolios\n🔹 Generate & Download ZIP")
-
     st.markdown('<div class="hr"></div>', unsafe_allow_html=True)
     st.markdown("**Need help?**\n- 📧 himanshu.singh@adani.com\n- 📞 +91-6354045825")
+
+
 
 # -------------------------------
 # Helper Functions (Business logic)
