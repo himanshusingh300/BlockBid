@@ -346,7 +346,7 @@ def choose_quantity(max_val):
     elif 51 <= max_val <= 100:
         return 50
     else:
-        return 100
+        return 50
 
 def create_blocks_multi_segments_stacked(df, quantity, include_partial=True, min_partial_rows=1, max_iterations=10000):
     start_times = df.iloc[3:, 2].apply(normalize_time).tolist()  # Column C (Start)
