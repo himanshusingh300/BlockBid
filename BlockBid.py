@@ -338,15 +338,38 @@ def infer_interval_size(start_times, end_times):
         prev = s
     return 15
 
-def choose_quantity(max_val):
+
+def determine_quantity_and_blocks(df, max_val):
+    """
+    Returns (quantity, blocks) per portfolio using the rule:
+      - <= 20      : None
+      - 21..50     : 20 MW
+      - 51..100    : 50 MW
+      - > 100      : Start with 50 MW; if blocks count > 50, switch to 100 MW
+    """
+    # Base tiers
     if max_val <= 20:
-        return None
+        return None, []
     elif 21 <= max_val <= 50:
-        return 20
+        q = 20
+        blocks = create_blocks_multi_segments_stacked(df, q)
+        return q, blocks
     elif 51 <= max_val <= 100:
-        return 50
+        q = 50
+        blocks = create_blocks_multi_segments_stacked(df, q)
+        return q, blocks
     else:
-        return 50
+        # > 100: start with 50 MW
+        q50 = 50
+        blocks50 = create_blocks_multi_segments_stacked(df, q50)
+        if len(blocks50) > 50:
+            # Exceeds 50 blocks => switch to 100 MW
+            q100 = 100
+            blocks100 = create_blocks_multi_segments_stacked(df, q100)
+            return q100, blocks100
+        else:
+            return q50, blocks50
+
 
 def create_blocks_multi_segments_stacked(df, quantity, include_partial=True, min_partial_rows=1, max_iterations=10000):
     start_times = df.iloc[3:, 2].apply(normalize_time).tolist()  # Column C (Start)
@@ -674,13 +697,21 @@ with st.container():
                                     st.info(f"Skipping '{sheet}': insufficient columns (need >= 19 including Column S).")
                                     continue
 
+                                
+                                # Determine dynamic quantity and blocks per the new rule
                                 s_init = pd.to_numeric(df.iloc[3:, 18], errors='coerce').fillna(0)
                                 max_val = s_init.max()
-                                quantity = choose_quantity(max_val)
-
+                                
+                                quantity, blocks = determine_quantity_and_blocks(df, max_val)
+                                
                                 if quantity is None:
                                     st.info(f"No Block Bid for '{sheet}' (max balance <= 20).")
                                     continue
+                                
+                                if not blocks:
+                                    st.info(f"No valid blocks found for '{sheet}' with quantity {quantity}.")
+                                    continue
+
 
                                 blocks = create_blocks_multi_segments_stacked(df, quantity)
 
@@ -742,3 +773,4 @@ with st.container():
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="hr"></div>', unsafe_allow_html=True)
+
