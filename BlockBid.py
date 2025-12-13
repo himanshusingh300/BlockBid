@@ -171,8 +171,6 @@ button[kind="primary"] {
 # Sidebar (brand + quick actions)
 # -------------------------------
 
-
-
 import streamlit as st
 
 with st.sidebar:
@@ -261,8 +259,6 @@ with st.sidebar:
     st.markdown("🔹 Upload Excel with `Price_Input`\n🔹 Choose portfolios\n🔹 Generate & Download ZIP")
     st.markdown('<div class="hr"></div>', unsafe_allow_html=True)
     st.markdown("**Need help?**\n- 📧 himanshu.singh@adani.com\n- 📞 +91-6354045825")
-
-
 
 # -------------------------------
 # Helper Functions (Business logic)
@@ -435,31 +431,6 @@ def create_blocks_multi_segments_stacked(df, quantity, include_partial=True, min
 
     return blocks
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import math
 from datetime import datetime
 
@@ -552,36 +523,6 @@ def get_price_and_ocf(price_df, start_time, end_time):
     avg_ocf   = round(weighted_combined_sum / total_w, 0)
 
     return avg_price, avg_ocf
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def fmt_hhmm(t):
     tt = normalize_time(t)
@@ -752,7 +693,7 @@ with st.container():
 <div class="card">
   <ul style="margin:0;padding-left:18px;">
     <li><b>Intervals:</b> Start (Col C), End (Col D), Balance (Col S) starting row 4</li>
-    <li><b>Quantity tiers:</b> ≤20 (none), 21–50 ⇒ 20 MW, 51–100 ⇒ 50 MW, >100 ⇒ 100 MW</li>
+    <li><b>Quantity tiers:</b> ≤20 (none), 21–50 ⇒ 20 MW, 51–100 ⇒ 50 MW, >100 ⇒ 100 MW or 50MW depending on the unique counts of BBs</li>
     <li><b>Blocks:</b> 2-hour windows; partial leftovers are included</li>
     <li><b>Stacking:</b> Keeps creating additional BBs in the same windows until balances fall below the quantity</li>
     <li><b>Prices:</b> Averaged from <code>Price_Input</code> (Price=Col V, OCF Add-on=Col W) for each block window</li>
@@ -773,4 +714,5 @@ with st.container():
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="hr"></div>', unsafe_allow_html=True)
+
 
